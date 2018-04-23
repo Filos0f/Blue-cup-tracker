@@ -5,6 +5,26 @@
     <title>Simple File Upload</title>
   </head>
   <body>
-    Hello
+        {% load static %}
+
+{% block content %}
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="myfile">
+    <button type="submit">Upload</button>
+  </form>
+
+  {% if uploaded_file_url %}
+    <p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
+  {% endif %}
+
+  {% if images_list %}
+    {% for image in images_list %}
+      {% load static %}
+      <img width='250' height='200' src="{%static image %}">
+      }
+    {% endfor %}
+  {% endif %}
+{% endblock %}
   </body>
 </html>

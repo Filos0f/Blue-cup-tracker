@@ -7,6 +7,7 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
+    url(r'^uploads/simple/$', views.simple_upload, name='index'),
 ]
 
 if settings.DEBUG:
