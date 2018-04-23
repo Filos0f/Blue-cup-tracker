@@ -8,6 +8,39 @@ def setup_ROI_for_tracking(roi) :
     cv2.normalize(roi_hist,roi_hist,0,255,cv2.NORM_MINMAX)
     return roi_hist
 
+def draw_on_image(
+    frame,
+    track_window, 
+    track_window2, 
+    prob_count, 
+    prob_count2, 
+    previous_status, 
+    i, 
+    path_to_save,
+    debug) :
+    x,y,w,h = track_window
+    x2,y2,w2,h2 = track_window2
+
+    if prob_count>300:
+        if debug:
+            frame = cv2.rectangle(frame, (x2,y2), (x2+w2,y2+h2), 255,2)
+            frame = cv2.rectangle(frame, (x,y), (x+w,y+h), 155,3)
+        if(previous_status == 0):
+            cv2.putText(frame,"Appeared", (200,60), cv2.FONT_HERSHEY_SIMPLEX, 3, (55,85,255),3)
+            outfile =path_to_save+'pic%s.jpg' % (i)
+            cv2.imwrite(outfile, frame)
+            i+=1
+        previous_status = 1;
+    elif(prob_count<50):
+        if(previous_status==1):
+            outfile = path_to_save+'pic%s.jpg' % (i)
+            cv2.putText(frame,"Dissapeared", (200,60), cv2.FONT_HERSHEY_SIMPLEX, 3, (255,25,255),3)
+            cv2.imwrite(outfile, frame)
+            i+=1
+        previous_status = 0;
+
+    return previous_status, i
+
 
 def do_detection(
     video_path='cup_detection/media/2018-02-2715_03_24.mp4',
@@ -61,6 +94,17 @@ def do_detection(
             ret, track_window2 = cv2.CamShift(dst2, track_window2, term_crit)
             prob_count = np.count_nonzero(dst>250)
             prob_count2 = np.count_nonzero(dst2>250)
+
+            previous_status, i = draw_on_image(
+                frame,
+                track_window, 
+                track_window2, 
+                prob_count, 
+                prob_count2, 
+                previous_status, 
+                i, 
+                path_to_save,
+                debug)
 
             if debug:
                 cv2.imshow('img2',frame)
