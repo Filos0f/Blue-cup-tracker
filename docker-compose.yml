@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  blue-cup:
+    container_name: blue-cup
+    build:
+      context: ./src
+    command: python3 manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
