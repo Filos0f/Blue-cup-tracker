@@ -5,14 +5,6 @@
     <title>Simple File Upload</title>
   </head>
   <body>
-  <style type="text/css">
-     img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-  </style>
- 
     {% load static %}
 
 {% block content %}
@@ -29,7 +21,7 @@
   {% if images_list %}
     {% for image in images_list %}
       {% load static %}
-      <img width='300' height='220' align="middle" src="{%static image %}">
+      <img width='300' height='220' src="{%static image %}">
       
     {% endfor %}
   {% endif %}

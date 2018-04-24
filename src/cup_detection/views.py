@@ -19,7 +19,6 @@ def simple_upload(request):
         do_detection(path_to_save=psave, debug=False)
 
         images_list = sorted(glob.glob('cup_detection/static/images/pics/*'))
-        
         for i in range(len(images_list)) :
             images_list[i] = images_list[i][len('cup_detection/static/') : len(images_list[i])]
 
